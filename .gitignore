@@ -36,6 +36,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local JSON "database" (see src/lib/db.ts) - seeded fresh on first run
+/data/db.json
+
+# generated product-art SVGs (see src/lib/productArt.ts) - regenerated
+# deterministically whenever data/db.json is reseeded
+/public/products/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
