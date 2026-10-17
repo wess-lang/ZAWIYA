@@ -63,6 +63,14 @@ URL — the "Image URL" field on the dashboard's add/edit product form
 already does this (leave it blank and a generated illustration is used
 instead).
 
+## Mobile app
+
+`mobile/` is a native Flutter client — the Flutter app the project
+documentation (Section 5.2) originally specified, built against this
+app's existing API (`src/app/api/**`) instead of a separate backend.
+See `mobile/README.md` for what's implemented and how to run it
+alongside `npm run dev`.
+
 ## Stack
 
 - **Next.js 16** (App Router, TypeScript, Tailwind CSS v4)
