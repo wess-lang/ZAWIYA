@@ -76,7 +76,7 @@ function LoginFormInner() {
       <div className="mt-8 rounded-lg border border-dashed border-stone-300 p-3 text-xs text-stone-500">
         <p className="mb-1 font-medium text-stone-600">Demo accounts (seeded):</p>
         <p>Customer: customer@zawiya.jo / customer123</p>
-        <p>Shop owner: oliveoak@zawiya.jo / shopowner123</p>
+        <p>Shop owner: ashley@zawiya.jo / shopowner123</p>
         <p>Admin: admin@zawiya.jo / admin123</p>
       </div>
     </div>

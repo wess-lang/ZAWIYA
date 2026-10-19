@@ -4,6 +4,7 @@ import '../../core/api_client.dart';
 import '../../models/models.dart';
 import '../../services/services.dart';
 import '../../widgets/common.dart';
+import '../../widgets/shop_logo.dart';
 import '../product/product_detail_screen.dart';
 
 /// A single shop's own page — only its categories and products, not the
@@ -48,11 +49,16 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.shop.name)),
       body: Column(children: [
-        if (widget.shop.tagline.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: Align(alignment: Alignment.centerLeft, child: Text(widget.shop.tagline)),
-          ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+          child: Row(children: [
+            ShopLogo(shopName: widget.shop.name, accentHex: widget.shop.accent, size: 52),
+            if (widget.shop.tagline.isNotEmpty) ...[
+              const SizedBox(width: 14),
+              Expanded(child: Text(widget.shop.tagline)),
+            ],
+          ]),
+        ),
         SizedBox(
           height: 40,
           child: ListView(

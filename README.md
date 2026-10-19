@@ -34,18 +34,34 @@ that simpler stack; see "FR coverage" below for the mapping.
 
 ## Placeholder data
 
-The six seeded partner shops (Olive & Oak, Nordic Nook, Terra & Thread,
-Aurum House, Qasr Heritage, Rawabi Home) and their ~27 products are
-original placeholders, not real furniture retailers. None of them have
-actually partnered with this app, and none use a real retailer's name,
-branding, or product photos — Olive & Oak, Nordic Nook, and Rawabi Home
-are deliberately styled after three common real-world positions
-(mainstream family upholstery, Scandinavian flat-pack, and a big-box
-wide-selection retailer) without copying any specific real company's
-identity, for the same copyright/trademark reason furnish-jo's README
-gives. Swapping in a real catalogue later — once there's an actual
-partnership — is a seed-data change (`src/lib/seed.ts`), not a rebuild;
-the rest of the app keeps working against whatever is in `data/db.json`.
+The seven seeded partner shops (Ashley Furniture HomeStore, IKEA,
+Marina Home Interiors, Decoration One, Shahwan Furniture, Home Centre,
+Midas Home & Office Furniture) use the names of real furniture
+retailers that operate in Amman, at the requester's explicit direction
+— an earlier version of this seed data used original fictional shop
+names specifically to avoid this. **None of these businesses have
+actually partnered with this app or reviewed/endorsed it**, and using
+a real company's name for an unaffiliated "partner shop" risks
+implying a partnership that doesn't exist (a trademark/passing-off
+concern, not just a style choice) if this is ever shown to anyone
+outside your own testing. The ~27 products under each shop are still
+original placeholders — not real product names, prices, or catalogues
+from any of these retailers.
+
+**`public/brand-logos/` holds actual logo artwork for all seven of
+these retailers** (see `mobile/lib/widgets/shop_logo.dart` for the
+mapping), included in this repo at the requester's explicit direction
+after being flagged as a materially bigger risk than the names alone:
+a real company's copyrighted logo, shown next to an unaffiliated
+"partner shop" page, reads as an implied endorsement. Any shop whose
+logo file goes missing falls back to a plain colour badge instead.
+
+If this app is meant to go beyond local demo use, swap `src/lib/seed.ts`
+back to invented shop names (see git history for the prior version),
+drop `public/brand-logos/`, or secure an actual partnership first.
+Swapping in a real catalogue later — once there's an actual partnership
+— is a seed-data change (`src/lib/seed.ts`), not a rebuild; the rest of
+the app keeps working against whatever is in `data/db.json`.
 
 **Product photos are generated illustrations, not photographs**
 (`src/lib/productArt.ts`), for the same reason: taking real retailers'
@@ -115,7 +131,7 @@ back to an insecure default for local dev.
 | Role | Email | Password |
 |---|---|---|
 | Customer | `customer@zawiya.jo` | `customer123` |
-| Shop owner (Olive & Oak) | `oliveoak@zawiya.jo` | `shopowner123` |
+| Shop owner (Ashley Furniture HomeStore) | `ashley@zawiya.jo` | `shopowner123` |
 | Shop owner (pending approval) | `pendingshop@zawiya.jo` | `shopowner123` |
 | Admin | `admin@zawiya.jo` | `admin123` |
 

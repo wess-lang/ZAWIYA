@@ -39,7 +39,7 @@ You need the backend running first — from the repo root:
 ```bash
 npm install
 cp .env.local.example .env.local   # then fill in ANTHROPIC_API_KEY for Room-Fit
-npm run dev                         # now binds 0.0.0.0, so a device/emulator can reach it
+npm run dev                         # binds 0.0.0.0:3005, so a device/emulator can reach it
 ```
 
 Then, from this `mobile/` directory:
@@ -57,18 +57,18 @@ running," so the app's server address is editable at runtime from
 
 | Target | Default |
 |---|---|
-| Android emulator | `http://10.0.2.2:3000` |
-| iOS simulator / macOS desktop | `http://localhost:3000` |
-| Physical device (either OS) | not guessable — set your computer's LAN IP from Account → Server, e.g. `http://192.168.1.23:3000` |
+| Android emulator | `http://10.0.2.2:3005` |
+| iOS simulator / macOS desktop | `http://localhost:3005` |
+| Physical device (either OS) | not guessable — set your computer's LAN IP from Account → Server, e.g. `http://192.168.1.4:3005` (find yours with `ipconfig getifaddr en0` on the Mac running `npm run dev`) |
 
 You can also set it at launch without touching the UI:
 
 ```bash
-flutter run --dart-define=ZAWIYA_SERVER=http://localhost:3001
+flutter run --dart-define=ZAWIYA_SERVER=http://192.168.1.4:3005
 ```
 
-(Useful when port 3000 is already taken and Next picked a different
-port, as it does automatically.)
+(Useful for a physical device, or if you've pointed `npm run dev` at a
+different port.)
 
 ## Platforms
 

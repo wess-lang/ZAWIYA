@@ -87,7 +87,7 @@ class _DemoAccounts extends StatelessWidget {
   Widget build(BuildContext context) {
     const rows = [
       ('Customer', 'customer@zawiya.jo', 'customer123'),
-      ('Shop owner', 'oliveoak@zawiya.jo', 'shopowner123'),
+      ('Shop owner', 'ashley@zawiya.jo', 'shopowner123'),
       ('Admin', 'admin@zawiya.jo', 'admin123'),
     ];
     return Container(

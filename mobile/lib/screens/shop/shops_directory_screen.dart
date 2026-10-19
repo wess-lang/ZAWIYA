@@ -5,6 +5,7 @@ import '../../models/models.dart';
 import '../../services/services.dart';
 import '../../theme.dart';
 import '../../widgets/common.dart';
+import '../../widgets/shop_logo.dart';
 import 'shop_detail_screen.dart';
 
 /// /shops — lists every active partner shop. Tapping one opens its own
@@ -71,14 +72,6 @@ class _ShopTile extends StatelessWidget {
   final VoidCallback onTap;
   const _ShopTile({required this.shop, required this.onTap});
 
-  Color _accent() {
-    try {
-      return Color(int.parse(shop.accent.replaceFirst('#', '0xFF')));
-    } catch (_) {
-      return ZColors.sage600;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -92,12 +85,7 @@ class _ShopTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(children: [
-          Container(
-            width: 44, height: 44,
-            decoration: BoxDecoration(color: _accent(), borderRadius: BorderRadius.circular(10)),
-            alignment: Alignment.center,
-            child: Text(shop.name.isNotEmpty ? shop.name[0] : '?', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-          ),
+          ShopLogo(shopName: shop.name, accentHex: shop.accent),
           const SizedBox(width: 14),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

@@ -16,21 +16,24 @@ class AppConfig {
   static const _prefsKey = 'zawiya.server_origin';
 
   /// Compile-time override, e.g.
-  /// `flutter run --dart-define=ZAWIYA_SERVER=http://localhost:3001`
-  /// (handy in dev when the default port 3000 is already taken, or in
-  /// CI). Takes priority over the platform guess, but a value the user
-  /// saved from the Account > Server screen still wins over both.
+  /// `flutter run --dart-define=ZAWIYA_SERVER=http://localhost:3005`
+  /// (handy in dev, or in CI). Takes priority over the platform guess,
+  /// but a value the user saved from the Account > Server screen still
+  /// wins over both.
   static const _envOverride = String.fromEnvironment('ZAWIYA_SERVER');
 
-  /// Best-effort default:
+  /// Best-effort default. `npm run dev`/`start` pin the server to port
+  /// 3005 (see package.json) specifically so this default stays valid
+  /// instead of racing Next's "pick whatever port is free" behavior:
   /// - Android emulator maps the host loopback to 10.0.2.2.
   /// - iOS simulator and macOS/desktop can reach the host via localhost.
   /// - A real device needs the dev machine's LAN IP, set from the
-  ///   Account tab's "Server" field.
+  ///   Account tab's "Server" field — localhost on a phone means the
+  ///   phone itself, not your computer.
   static String get platformDefault {
     if (_envOverride.isNotEmpty) return _envOverride;
-    if (Platform.isAndroid) return 'http://10.0.2.2:3000';
-    return 'http://localhost:3000';
+    if (Platform.isAndroid) return 'http://10.0.2.2:3005';
+    return 'http://localhost:3005';
   }
 
   static String _origin = platformDefault;

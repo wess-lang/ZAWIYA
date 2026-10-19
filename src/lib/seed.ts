@@ -32,58 +32,67 @@ export function buildSeed(): Database {
 
   const shopOwnerDefs = [
     {
-      name: "Olive & Oak",
+      name: "Ashley Furniture HomeStore",
       tagline: "Comfortable upholstered furniture for family homes",
       city: "Amman",
       accent: "#6B7A4F",
       styleTags: ["upholstered", "family", "classic-modern", "mid-range"],
       ownerName: "Bushra Nizami",
-      ownerEmail: "oliveoak@zawiya.jo",
+      ownerEmail: "ashley@zawiya.jo",
     },
     {
-      name: "Nordic Nook",
+      name: "IKEA",
       tagline: "Flat-pack Scandinavian essentials, built for small spaces",
       city: "Amman",
       accent: "#3E6F6B",
       styleTags: ["scandinavian", "minimalist", "budget", "functional"],
       ownerName: "Hashem Alalem",
-      ownerEmail: "nordicnook@zawiya.jo",
+      ownerEmail: "ikea@zawiya.jo",
     },
     {
-      name: "Terra & Thread",
-      tagline: "Artisan pieces in natural wood, linen and rattan",
+      name: "Marina Home Interiors",
+      tagline: "Eclectic boutique pieces in natural wood, linen and rattan",
       city: "Amman",
       accent: "#A6763E",
       styleTags: ["boutique", "natural", "artisan", "earthy"],
       ownerName: "Sondos Fraihat",
-      ownerEmail: "terrathread@zawiya.jo",
+      ownerEmail: "marinahome@zawiya.jo",
     },
     {
-      name: "Aurum House",
-      tagline: "Statement furniture with gold accents and bold shapes",
+      name: "Decoration One",
+      tagline: "Statement furniture and decor with bold, modern shapes",
       city: "Amman",
       accent: "#B8860B",
       styleTags: ["luxury", "modern", "statement", "gold-accent"],
       ownerName: "Layla Qassem",
-      ownerEmail: "aurumhouse@zawiya.jo",
+      ownerEmail: "decorationone@zawiya.jo",
     },
     {
-      name: "Qasr Heritage",
-      tagline: "Classic carved-wood furniture rooted in regional craft",
-      city: "Irbid",
+      name: "Shahwan Furniture",
+      tagline: "A long-established Amman furniture house, rooted in regional craft since 1989",
+      city: "Amman",
       accent: "#6B3F2A",
       styleTags: ["traditional", "carved-wood", "heritage", "formal"],
       ownerName: "Omar Shahin",
-      ownerEmail: "qasrheritage@zawiya.jo",
+      ownerEmail: "shahwan@zawiya.jo",
     },
     {
-      name: "Rawabi Home",
+      name: "Home Centre",
       tagline: "A wide-selection home retailer with accessible prices across every room",
       city: "Amman",
       accent: "#2C5F8A",
       styleTags: ["mainstream", "wide-selection", "accessible", "value", "family"],
       ownerName: "Maher Zyoud",
-      ownerEmail: "rawabihome@zawiya.jo",
+      ownerEmail: "homecentre@zawiya.jo",
+    },
+    {
+      name: "Midas Home & Office Furniture",
+      tagline: "Functional furniture for home and office, built for everyday use",
+      city: "Amman",
+      accent: "#7A4F6B",
+      styleTags: ["functional", "office", "mid-range", "practical"],
+      ownerName: "Fadi Qutaishat",
+      ownerEmail: "midas@zawiya.jo",
     },
   ];
 
@@ -111,9 +120,9 @@ export function buildSeed(): Database {
   const byName = (n: string) => shops.find((s) => s.name === n)!.id;
 
   const productDefs: Omit<Product, "id" | "image">[] = [
-    // Olive & Oak
+    // Ashley Furniture HomeStore
     {
-      shopId: byName("Olive & Oak"),
+      shopId: byName("Ashley Furniture HomeStore"),
       name: "Marrak 3-Seater Sofa",
       category: "sofa",
       price: 480,
@@ -126,7 +135,7 @@ export function buildSeed(): Database {
         "A deep, family-friendly sofa in stain-resistant grey weave fabric, with soft rolled arms and solid beech legs.",
     },
     {
-      shopId: byName("Olive & Oak"),
+      shopId: byName("Ashley Furniture HomeStore"),
       name: "Haya Recliner Armchair",
       category: "chair",
       price: 220,
@@ -139,7 +148,7 @@ export function buildSeed(): Database {
         "A one-touch reclining armchair in warm beige fabric, built for everyday use.",
     },
     {
-      shopId: byName("Olive & Oak"),
+      shopId: byName("Ashley Furniture HomeStore"),
       name: "Cedar Dining Set (6-seat)",
       category: "dining",
       price: 650,
@@ -152,7 +161,7 @@ export function buildSeed(): Database {
         "A solid walnut-finish dining table with six upholstered chairs, sized for a family dining room.",
     },
     {
-      shopId: byName("Olive & Oak"),
+      shopId: byName("Ashley Furniture HomeStore"),
       name: "Layla Storage Ottoman",
       category: "storage",
       price: 85,
@@ -164,9 +173,9 @@ export function buildSeed(): Database {
       description:
         "A hinged-top ottoman that doubles as extra seating and hidden storage.",
     },
-    // Nordic Nook
+    // IKEA
     {
-      shopId: byName("Nordic Nook"),
+      shopId: byName("IKEA"),
       name: "Fjord 2-Seater Sofa",
       category: "sofa",
       price: 320,
@@ -179,7 +188,7 @@ export function buildSeed(): Database {
         "A compact two-seater in light grey fabric on slim oak legs, made for small living rooms.",
     },
     {
-      shopId: byName("Nordic Nook"),
+      shopId: byName("IKEA"),
       name: "Birk Study Desk",
       category: "office",
       price: 110,
@@ -192,7 +201,7 @@ export function buildSeed(): Database {
         "A narrow desk in light oak veneer with a single drawer, built to fit against a wall.",
     },
     {
-      shopId: byName("Nordic Nook"),
+      shopId: byName("IKEA"),
       name: "Nord Bed Frame (Queen)",
       category: "bed",
       price: 240,
@@ -205,7 +214,7 @@ export function buildSeed(): Database {
         "A low-profile queen bed frame in white-washed oak with an upholstered headboard panel.",
     },
     {
-      shopId: byName("Nordic Nook"),
+      shopId: byName("IKEA"),
       name: "Lyss Floor Lamp",
       category: "lighting",
       price: 45,
@@ -217,9 +226,9 @@ export function buildSeed(): Database {
       description:
         "A simple arched floor lamp with a fabric shade and an oak dowel base.",
     },
-    // Terra & Thread
+    // Marina Home Interiors
     {
-      shopId: byName("Terra & Thread"),
+      shopId: byName("Marina Home Interiors"),
       name: "Olive Branch Rattan Armchair",
       category: "chair",
       price: 150,
@@ -232,7 +241,7 @@ export function buildSeed(): Database {
         "A hand-woven rattan armchair with a cream cushion, equally at home indoors or on a covered balcony.",
     },
     {
-      shopId: byName("Terra & Thread"),
+      shopId: byName("Marina Home Interiors"),
       name: "Terra Linen Sofa",
       category: "sofa",
       price: 410,
@@ -245,7 +254,7 @@ export function buildSeed(): Database {
         "A relaxed-fit sofa upholstered in heavyweight terracotta linen over a solid pine frame.",
     },
     {
-      shopId: byName("Terra & Thread"),
+      shopId: byName("Marina Home Interiors"),
       name: "Grove Oak Dining Table",
       category: "dining",
       price: 390,
@@ -258,7 +267,7 @@ export function buildSeed(): Database {
         "A live-edge oak dining table that seats six, finished with natural oil to show the grain.",
     },
     {
-      shopId: byName("Terra & Thread"),
+      shopId: byName("Marina Home Interiors"),
       name: "Clay Pendant Light",
       category: "lighting",
       price: 60,
@@ -271,7 +280,7 @@ export function buildSeed(): Database {
         "A hand-thrown ceramic pendant shade in warm terracotta, for over a dining table or reading nook.",
     },
     {
-      shopId: byName("Terra & Thread"),
+      shopId: byName("Marina Home Interiors"),
       name: "Courtyard Rattan Lounge Set",
       category: "outdoor",
       price: 280,
@@ -283,75 +292,79 @@ export function buildSeed(): Database {
       description:
         "A two-seat rattan lounge set with a low table, weather-resistant and built for a balcony or courtyard.",
     },
-    // Aurum House
+    // Decoration One - the real shop's own focus is Islamic art and
+    // calligraphy reinterpreted as modern home decor and ornaments
+    // (founded 2010, Amman), not generic gold-accent furniture - this
+    // line was rewritten to match that after the earlier placeholder
+    // products (inherited from a renamed shop) didn't fit.
     {
-      shopId: byName("Aurum House"),
-      name: "Aurum Velvet Sofa",
-      category: "sofa",
-      price: 720,
-      stock: 3,
-      styleTags: ["luxury", "modern", "statement", "gold-accent"],
-      colorTags: ["emerald", "gold"],
-      roomTags: ["living room"],
-      dimensions: "220 x 95 x 85 cm",
+      shopId: byName("Decoration One"),
+      name: "Andalusia Calligraphy Wall Panel",
+      category: "decor",
+      price: 65,
+      stock: 14,
+      styleTags: ["oriental", "calligraphy", "islamic-art", "modern"],
+      colorTags: ["gold", "black"],
+      roomTags: ["living room", "entryway"],
+      dimensions: "60 x 2 x 90 cm",
       description:
-        "An emerald velvet sofa on polished gold-finish legs, built as a statement centerpiece.",
+        "A laser-cut metal wall panel in a modern Thuluth calligraphy design, finished in brushed gold.",
     },
     {
-      shopId: byName("Aurum House"),
-      name: "Midas Accent Chair",
+      shopId: byName("Decoration One"),
+      name: "Manara Lantern Pendant",
+      category: "lighting",
+      price: 165,
+      stock: 6,
+      styleTags: ["oriental", "ornamental", "warm"],
+      colorTags: ["gold", "amber"],
+      roomTags: ["dining room", "living room", "entryway"],
+      dimensions: "35 x 35 x 55 cm",
+      description:
+        "A pierced-metal lantern pendant in the Manara style, casting a patterned amber glow.",
+    },
+    {
+      shopId: byName("Decoration One"),
+      name: "Arabesque Console Table",
+      category: "storage",
+      price: 260,
+      stock: 5,
+      styleTags: ["oriental", "ornamental", "modern"],
+      colorTags: ["dark wood", "gold"],
+      roomTags: ["entryway", "living room"],
+      dimensions: "120 x 35 x 80 cm",
+      description:
+        "A console table with an inlaid arabesque-pattern front panel and brushed-gold hardware.",
+    },
+    {
+      shopId: byName("Decoration One"),
+      name: "Thuluth Script Accent Chair",
       category: "chair",
-      price: 280,
-      stock: 7,
-      styleTags: ["luxury", "modern", "gold-accent"],
-      colorTags: ["blush", "gold"],
-      roomTags: ["living room", "bedroom"],
+      price: 230,
+      stock: 6,
+      styleTags: ["oriental", "calligraphy", "islamic-art"],
+      colorTags: ["deep red", "gold"],
+      roomTags: ["living room"],
       dimensions: "70 x 75 x 90 cm",
       description:
-        "A curved blush-velvet accent chair with a sculptural gold-finish frame.",
+        "An accent chair upholstered in a jacquard fabric woven with a calligraphic Thuluth script motif.",
     },
     {
-      shopId: byName("Aurum House"),
-      name: "Nova Marble Dining Table",
-      category: "dining",
-      price: 980,
-      stock: 2,
-      styleTags: ["luxury", "modern", "statement", "gold-accent"],
-      colorTags: ["white marble", "gold"],
-      roomTags: ["dining room"],
-      dimensions: "220 x 100 x 75 cm",
-      description:
-        "A white marble-top dining table on a gold-finish pedestal base, seats eight.",
-    },
-    {
-      shopId: byName("Aurum House"),
-      name: "Halo Chandelier",
-      category: "lighting",
-      price: 340,
-      stock: 4,
-      styleTags: ["luxury", "statement", "gold-accent"],
-      colorTags: ["gold", "crystal"],
-      roomTags: ["dining room", "living room", "entryway"],
-      dimensions: "70 x 70 x 50 cm",
-      description:
-        "A circular chandelier in brushed gold with clustered crystal drops.",
-    },
-    {
-      shopId: byName("Aurum House"),
-      name: "Gilded Arch Mirror",
+      shopId: byName("Decoration One"),
+      name: "Resin Ornament Centerpiece Set",
       category: "decor",
-      price: 95,
-      stock: 11,
-      styleTags: ["luxury", "modern", "gold-accent"],
-      colorTags: ["gold"],
-      roomTags: ["entryway", "living room", "bedroom"],
-      dimensions: "70 x 5 x 160 cm",
+      price: 42,
+      stock: 20,
+      styleTags: ["oriental", "ornamental", "warm"],
+      colorTags: ["gold", "white marble"],
+      roomTags: ["dining room", "living room"],
+      dimensions: "25 x 25 x 15 cm",
       description:
-        "A tall arched mirror in a brushed-gold frame, sized for an entryway or over a dresser.",
+        "A set of three hand-finished resin ornaments with gold-leaf detailing, for a dining table or console.",
     },
-    // Qasr Heritage
+    // Shahwan Furniture
     {
-      shopId: byName("Qasr Heritage"),
+      shopId: byName("Shahwan Furniture"),
       name: "Hashemite Carved Sofa",
       category: "sofa",
       price: 560,
@@ -364,7 +377,7 @@ export function buildSeed(): Database {
         "A formal sofa with hand-carved dark wood trim and deep red upholstery, in a regional majlis style.",
     },
     {
-      shopId: byName("Qasr Heritage"),
+      shopId: byName("Shahwan Furniture"),
       name: "Majlis Carved Armchair",
       category: "chair",
       price: 240,
@@ -377,7 +390,7 @@ export function buildSeed(): Database {
         "A single armchair matching the Hashemite line, with the same carved wood and maroon velvet.",
     },
     {
-      shopId: byName("Qasr Heritage"),
+      shopId: byName("Shahwan Furniture"),
       name: "Heritage Carved Dining Table (8-seat)",
       category: "dining",
       price: 890,
@@ -390,7 +403,7 @@ export function buildSeed(): Database {
         "A long carved-walnut dining table for eight, with matching high-back carved chairs.",
     },
     {
-      shopId: byName("Qasr Heritage"),
+      shopId: byName("Shahwan Furniture"),
       name: "Qasr Carved Console",
       category: "storage",
       price: 310,
@@ -402,9 +415,9 @@ export function buildSeed(): Database {
       description:
         "An entryway console with ornate carved wood detailing and brass hardware.",
     },
-    // Rawabi Home
+    // Home Centre
     {
-      shopId: byName("Rawabi Home"),
+      shopId: byName("Home Centre"),
       name: "Everyday 3-Seater Sofa",
       category: "sofa",
       price: 265,
@@ -417,7 +430,7 @@ export function buildSeed(): Database {
         "A no-fuss three-seater in easy-clean fabric, built for everyday family use at an accessible price.",
     },
     {
-      shopId: byName("Rawabi Home"),
+      shopId: byName("Home Centre"),
       name: "Family Dining Set (6-seat)",
       category: "dining",
       price: 340,
@@ -430,7 +443,7 @@ export function buildSeed(): Database {
         "A sturdy, budget-friendly dining table with six chairs, sized for a family of five or six.",
     },
     {
-      shopId: byName("Rawabi Home"),
+      shopId: byName("Home Centre"),
       name: "3-Door Wardrobe",
       category: "storage",
       price: 195,
@@ -443,7 +456,7 @@ export function buildSeed(): Database {
         "A spacious three-door wardrobe with a hanging rail and shelving, finished in a light oak laminate.",
     },
     {
-      shopId: byName("Rawabi Home"),
+      shopId: byName("Home Centre"),
       name: "Essentials Bed Frame (Double)",
       category: "bed",
       price: 150,
@@ -456,7 +469,7 @@ export function buildSeed(): Database {
         "A simple upholstered double bed frame with a padded headboard, built for everyday durability.",
     },
     {
-      shopId: byName("Rawabi Home"),
+      shopId: byName("Home Centre"),
       name: "Desk Lamp & Shelf Combo",
       category: "lighting",
       price: 38,
@@ -467,6 +480,59 @@ export function buildSeed(): Database {
       dimensions: "40 x 20 x 45 cm",
       description:
         "An adjustable desk lamp with a built-in shelf for books or a phone, in a simple matte finish.",
+    },
+    // Midas Home & Office Furniture
+    {
+      shopId: byName("Midas Home & Office Furniture"),
+      name: "Executive L-Shape Desk",
+      category: "office",
+      price: 260,
+      stock: 6,
+      styleTags: ["functional", "office", "mid-range"],
+      colorTags: ["dark walnut", "charcoal"],
+      roomTags: ["office"],
+      dimensions: "160 x 140 x 75 cm",
+      description:
+        "A corner-fit L-shape desk in dark walnut laminate with a built-in cable channel, sized for a home office.",
+    },
+    {
+      shopId: byName("Midas Home & Office Furniture"),
+      name: "Flex Mesh Office Chair",
+      category: "chair",
+      price: 95,
+      stock: 15,
+      styleTags: ["functional", "office", "practical"],
+      colorTags: ["charcoal", "grey"],
+      roomTags: ["office"],
+      dimensions: "65 x 65 x 115 cm",
+      description:
+        "An adjustable mesh-back office chair with lumbar support, built for long workdays.",
+    },
+    {
+      shopId: byName("Midas Home & Office Furniture"),
+      name: "Modular Filing Bookshelf",
+      category: "storage",
+      price: 130,
+      stock: 10,
+      styleTags: ["functional", "office", "practical"],
+      colorTags: ["oak", "white"],
+      roomTags: ["office", "living room"],
+      dimensions: "80 x 35 x 180 cm",
+      description:
+        "An open-shelf unit with one lockable filing drawer, equally useful in a home office or living room.",
+    },
+    {
+      shopId: byName("Midas Home & Office Furniture"),
+      name: "Task Desk Lamp",
+      category: "lighting",
+      price: 28,
+      stock: 22,
+      styleTags: ["functional", "office", "practical"],
+      colorTags: ["charcoal"],
+      roomTags: ["office"],
+      dimensions: "20 x 20 x 48 cm",
+      description:
+        "An adjustable-arm LED task lamp with a dimmer switch, for a desk or workbench.",
     },
   ];
 
