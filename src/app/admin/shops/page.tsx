@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { readDb } from "@/lib/db";
+import { Container } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
 import ApprovalRow from "./ApprovalRow";
 
 // FR-15: Admin Shop Approval (Scenario 5, Section 4.3)
@@ -9,9 +11,9 @@ export default async function AdminShopsPage() {
   if (!user) redirect("/login?next=/admin/shops");
   if (user.role !== "admin") {
     return (
-      <p className="mx-auto max-w-xl px-4 py-16 text-center text-sm text-red-600">
+      <Container size="sm" className="py-16 text-center text-sm text-destructive">
         Admin access required.
-      </p>
+      </Container>
     );
   }
 
@@ -22,15 +24,17 @@ export default async function AdminShopsPage() {
   const reviewed = shops.filter((s) => s.status !== "pending");
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="mb-1 text-2xl font-semibold text-stone-900">Shop Approvals</h1>
-      <p className="mb-6 text-sm text-stone-600">Signed in as admin: {user.email}</p>
+    <Container size="md" className="py-10">
+      <h1 className="font-display mb-1 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        Shop Approvals
+      </h1>
+      <p className="mb-6 text-sm text-muted-foreground">Signed in as admin: {user.email}</p>
 
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-stone-500">
+      <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         Pending ({pending.length})
       </h2>
       {pending.length === 0 ? (
-        <p className="mb-8 text-sm text-stone-500">Nothing waiting for review.</p>
+        <p className="mb-8 text-sm text-muted-foreground">Nothing waiting for review.</p>
       ) : (
         <div className="mb-8 flex flex-col gap-3">
           {pending.map((shop) => (
@@ -39,25 +43,25 @@ export default async function AdminShopsPage() {
         </div>
       )}
 
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-stone-500">
+      <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         Reviewed
       </h2>
       <div className="flex flex-col gap-2">
         {reviewed.map((shop) => (
-          <div key={shop.id} className="flex items-center justify-between rounded-lg border border-stone-200 bg-white px-4 py-3 text-sm">
+          <div
+            key={shop.id}
+            className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-sm"
+          >
             <span>
-              {shop.name} <span className="text-stone-400">· {usersById.get(shop.ownerId)?.name}</span>
+              {shop.name}{" "}
+              <span className="text-muted-foreground">· {usersById.get(shop.ownerId)?.name}</span>
             </span>
-            <span
-              className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${
-                shop.status === "active" ? "bg-sage-50 text-sage-700" : "bg-red-50 text-red-700"
-              }`}
-            >
+            <Badge tone={shop.status === "active" ? "success" : "danger"} className="capitalize">
               {shop.status}
-            </span>
+            </Badge>
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   );
 }

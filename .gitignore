@@ -40,8 +40,10 @@ yarn-error.log*
 /data/db.json
 
 # generated product-art SVGs (see src/lib/productArt.ts) - regenerated
-# deterministically whenever data/db.json is reseeded
-/public/products/
+# deterministically whenever data/db.json is reseeded. Does NOT cover
+# /public/products/real/, which holds committed real product photos
+# referenced by seed.ts's `realImage` field - those must stay tracked.
+/public/products/*.svg
 
 # typescript
 *.tsbuildinfo

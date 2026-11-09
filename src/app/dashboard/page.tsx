@@ -2,6 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { readDb } from "@/lib/db";
+import { Card, Container } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import ShopLogo from "@/components/ShopLogo";
 
 // Entry point for the Shop Dashboard (FR-13/FR-14).
 export default async function DashboardPage() {
@@ -9,13 +13,13 @@ export default async function DashboardPage() {
   if (!user) redirect("/login?next=/dashboard");
   if (user.role !== "shop_owner" && user.role !== "admin") {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16 text-center text-sm text-stone-600">
+      <Container size="sm" className="py-16 text-center text-sm text-muted-foreground">
         This area is for shop owners.{" "}
-        <Link href="/shops/register" className="text-sage-700 hover:underline">
+        <Link href="/shops/register" className="text-brand-700 hover:underline">
           List a shop
         </Link>{" "}
         to get access.
-      </div>
+      </Container>
     );
   }
 
@@ -23,13 +27,15 @@ export default async function DashboardPage() {
   const shops = db.shops.filter((s) => s.ownerId === user.id);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-stone-900">Shop Dashboard</h1>
+    <Container size="md" className="py-10">
+      <h1 className="font-display mb-6 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        Shop Dashboard
+      </h1>
 
       {shops.length === 0 ? (
-        <p className="text-sm text-stone-600">
+        <p className="text-sm text-muted-foreground">
           You don&apos;t have a shop yet.{" "}
-          <Link href="/shops/register" className="text-sage-700 hover:underline">
+          <Link href="/shops/register" className="text-brand-700 hover:underline">
             List one
           </Link>
           .
@@ -42,58 +48,49 @@ export default async function DashboardPage() {
               .flatMap((o) => o.subOrders)
               .filter((s) => s.shopId === shop.id && s.status === "placed").length;
             return (
-              <div key={shop.id} className="rounded-xl border border-stone-200 bg-white p-5">
+              <Card key={shop.id}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full" style={{ backgroundColor: shop.accent }} />
+                    <ShopLogo name={shop.name} accent={shop.accent} size={40} />
                     <div>
-                      <div className="font-semibold text-stone-900">{shop.name}</div>
-                      <div className="text-xs text-stone-500">{shop.city}</div>
+                      <div className="font-semibold text-foreground">{shop.name}</div>
+                      <div className="text-xs text-muted-foreground">{shop.city}</div>
                     </div>
                   </div>
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${
-                      shop.status === "active"
-                        ? "bg-sage-50 text-sage-700"
-                        : shop.status === "pending"
-                        ? "bg-amber-50 text-amber-700"
-                        : "bg-red-50 text-red-700"
-                    }`}
+                  <Badge
+                    tone={
+                      shop.status === "active" ? "success" : shop.status === "pending" ? "warning" : "danger"
+                    }
+                    className="capitalize"
                   >
                     {shop.status}
-                  </span>
+                  </Badge>
                 </div>
 
                 {shop.status === "rejected" && shop.rejectionReason && (
-                  <p className="mt-2 text-xs text-red-600">Reason: {shop.rejectionReason}</p>
+                  <p className="mt-2 text-xs text-destructive">Reason: {shop.rejectionReason}</p>
                 )}
 
                 {shop.status === "active" && (
                   <div className="mt-4 flex flex-wrap gap-3 text-sm">
-                    <Link
-                      href={`/dashboard/${shop.id}/products`}
-                      className="rounded-full border border-stone-300 px-4 py-2 font-medium hover:border-stone-500"
-                    >
+                    <Button href={`/dashboard/${shop.id}/products`} variant="outline" size="sm">
                       Products ({productCount})
-                    </Link>
-                    <Link
-                      href={`/dashboard/${shop.id}/orders`}
-                      className="rounded-full border border-stone-300 px-4 py-2 font-medium hover:border-stone-500"
-                    >
+                    </Button>
+                    <Button href={`/dashboard/${shop.id}/orders`} variant="outline" size="sm">
                       Orders {pendingOrders > 0 && `(${pendingOrders} new)`}
-                    </Link>
+                    </Button>
                   </div>
                 )}
                 {shop.status === "pending" && (
-                  <p className="mt-3 text-xs text-stone-500">
+                  <p className="mt-3 text-xs text-muted-foreground">
                     Waiting on administrator approval before this shop goes live.
                   </p>
                 )}
-              </div>
+              </Card>
             );
           })}
         </div>
       )}
-    </div>
+    </Container>
   );
 }

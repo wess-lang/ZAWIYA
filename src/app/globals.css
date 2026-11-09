@@ -1,32 +1,413 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------- */
+/* Design tokens — furniture-showroom identity                           */
+/*                                                                        */
+/* Replaces an earlier food-delivery-app reskin (bright orange, a bubbly */
+/* rounded display font, glowing colored shadows) that read as a quick-  */
+/* commerce app, not a furniture retailer. This palette is built around  */
+/* a deep forest/olive green — the kind of muted, confident color real   */
+/* premium furniture brands use — on warm ivory surfaces, with a brass/  */
+/* gold secondary for premium accents (ratings, "new," sale). Shadows    */
+/* are neutral, not colored and glowing; the display face is a serif     */
+/* (Fraunces) for the sense of craft and material a furniture brand      */
+/* wants, paired with a clean sans for body text and UI chrome.          */
+/* ---------------------------------------------------------------------- */
+
 :root {
-  --background: #faf7f1;
-  --foreground: #21201b;
-  --color-sage-50: #f1f3ec;
-  --color-sage-100: #e1e6d4;
-  --color-sage-200: #c6cfab;
-  --color-sage-400: #8a9a6b;
-  --color-sage-600: #6b7a4f;
-  --color-sage-700: #566340;
-  --color-sage-800: #434d32;
+  /* base surfaces — warm ivory, not stark white/grey */
+  --background: #faf8f4;
+  --foreground: #241f1a;
+  --card: #ffffff;
+  --card-foreground: #241f1a;
+  --muted: #f1ece3;
+  --muted-foreground: #6b6256;
+  --border: #e6dfd3;
+  --border-strong: #cfc3b0;
+  --ring: #566d36;
+
+  /* brand / accent — deep forest/olive green */
+  --color-brand-50: #f1f4ec;
+  --color-brand-100: #e1e8d4;
+  --color-brand-200: #c7d4ab;
+  --color-brand-300: #a9bd80;
+  --color-brand-400: #8aa35e;
+  --color-brand-500: #6d8a45;
+  --color-brand-600: #566d36;
+  --color-brand-700: #44572b;
+  --color-brand-800: #374522;
+  --color-brand-900: #2c371c;
+
+  /* secondary brand accent — warm brass/gold, for premium touches */
+  --color-brass-50: #fbf3e7;
+  --color-brass-600: #a9824f;
+  --color-brass-700: #8a6a3e;
+
+  /* "pop" accents — vivid coral + chartreuse, used sparingly for
+     stickers, badges, gradient fills and hover punches, not as the
+     dominant surface colour. This is the funky/trendy layer on top of
+     the calmer brand palette, not a replacement for it. */
+  --color-pop: #ff6b4a;
+  --color-pop-soft: #ffe8e1;
+  --color-pop-2: #c7e94c;
+
+  --accent: #566d36;
+  --accent-foreground: #ffffff;
+  --accent-soft: #f1f4ec;
+  --accent-soft-foreground: #44572b;
+
+  /* semantic status colors — muted, not clinical-saturated */
+  --success: #44572b;
+  --success-foreground: #ffffff;
+  --warning: #a9790a;
+  --warning-soft: #fcf1d9;
+  --info: #3f5e82;
+  --info-soft: #e7eef5;
+  --plum: #70507f;
+  --plum-soft: #efe6f2;
+  --destructive: #a1432e;
+  --destructive-foreground: #ffffff;
+  --destructive-soft: #f8e9e3;
+
+  --radius: 0.9rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #1a1815;
+    --foreground: #ece6dc;
+    --card: #231f1b;
+    --card-foreground: #ece6dc;
+    --muted: #2a2520;
+    --muted-foreground: #a69c8c;
+    --border: #38322a;
+    --border-strong: #4c4436;
+    --ring: #9db179;
+
+    --color-brand-50: #262d1c;
+    --color-brand-100: #2f3822;
+    --color-brand-200: #40502c;
+    --color-brand-300: #576d3b;
+    --color-brand-400: #76904f;
+    --color-brand-500: #8fa864;
+    --color-brand-600: #9db179;
+    --color-brand-700: #b3c495;
+    --color-brand-800: #ccd9b4;
+    --color-brand-900: #e4ead6;
+
+    --color-brass-50: #2b2318;
+    --color-brass-600: #cbac78;
+    --color-brass-700: #ddc79b;
+
+    --color-pop: #ff8265;
+    --color-pop-soft: #3a211a;
+    --color-pop-2: #d7f06a;
+
+    --accent: #9db179;
+    --accent-foreground: #16190f;
+    --accent-soft: #262d1c;
+    --accent-soft-foreground: #ccd9b4;
+
+    --success: #9db179;
+    --success-foreground: #16190f;
+    --warning: #d1a24f;
+    --warning-soft: #332a17;
+    --info: #7fa1c7;
+    --info-soft: #1d2730;
+    --plum: #b996c4;
+    --plum-soft: #2a2130;
+    --destructive: #d97d60;
+    --destructive-foreground: #1c130f;
+    --destructive-soft: #35211a;
+  }
+}
+
+:root[data-theme="dark"] {
+  --background: #1a1815;
+  --foreground: #ece6dc;
+  --card: #231f1b;
+  --card-foreground: #ece6dc;
+  --muted: #2a2520;
+  --muted-foreground: #a69c8c;
+  --border: #38322a;
+  --border-strong: #4c4436;
+  --ring: #9db179;
+
+  --color-brand-50: #262d1c;
+  --color-brand-100: #2f3822;
+  --color-brand-200: #40502c;
+  --color-brand-300: #576d3b;
+  --color-brand-400: #76904f;
+  --color-brand-500: #8fa864;
+  --color-brand-600: #9db179;
+  --color-brand-700: #b3c495;
+  --color-brand-800: #ccd9b4;
+  --color-brand-900: #e4ead6;
+
+  --color-brass-50: #2b2318;
+  --color-brass-600: #cbac78;
+  --color-brass-700: #ddc79b;
+
+  --color-pop: #ff8265;
+  --color-pop-soft: #3a211a;
+  --color-pop-2: #d7f06a;
+
+  --accent: #9db179;
+  --accent-foreground: #16190f;
+  --accent-soft: #262d1c;
+  --accent-soft-foreground: #ccd9b4;
+
+  --success: #9db179;
+  --success-foreground: #16190f;
+  --warning: #d1a24f;
+  --warning-soft: #332a17;
+  --info: #7fa1c7;
+  --info-soft: #1d2730;
+  --plum: #b996c4;
+  --plum-soft: #2a2130;
+  --destructive: #d97d60;
+  --destructive-foreground: #1c130f;
+  --destructive-soft: #35211a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-sage-50: var(--color-sage-50);
-  --color-sage-100: var(--color-sage-100);
-  --color-sage-200: var(--color-sage-200);
-  --color-sage-400: var(--color-sage-400);
-  --color-sage-600: var(--color-sage-600);
-  --color-sage-700: var(--color-sage-700);
-  --color-sage-800: var(--color-sage-800);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
+
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+
+  --color-brass-50: var(--color-brass-50);
+  --color-brass-600: var(--color-brass-600);
+  --color-brass-700: var(--color-brass-700);
+
+  --color-pop: var(--color-pop);
+  --color-pop-soft: var(--color-pop-soft);
+  --color-pop-2: var(--color-pop-2);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-foreground: var(--accent-soft-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-plum: var(--plum);
+  --color-plum-soft: var(--plum-soft);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-soft: var(--destructive-soft);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
+
+  --radius-card: var(--radius);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+      color-scheme: dark;
+    }
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  /* Calm, on-brand focus ring everywhere — replaces the browser's
+     default blue outline, which clashed with the rest of the palette. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+    transition: outline-offset 0.15s ease;
+  }
+
+  ::selection {
+    background: var(--color-brand-200);
+    color: var(--color-brand-900);
+  }
+
+  /* Thin, low-contrast scrollbar in both themes instead of the system
+     default. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  img {
+    color-scheme: light;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.5s ease both;
+  }
+  .animate-fade-in {
+    animation: fade-in 0.4s ease both;
+  }
+  .animate-pop {
+    animation: pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  /* Slow, organic morphing blob — used behind hero sections instead of
+     a static blurred circle, for a trendier, less corporate backdrop. */
+  .animate-blob {
+    animation: blob-morph 12s ease-in-out infinite;
+  }
+  .animate-blob-delay {
+    animation: blob-morph 12s ease-in-out infinite;
+    animation-delay: -4s;
+  }
+  /* Gentle bob, for small decorative icons (sparkles, stickers). */
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  /* Rotate wiggle, meant for hover (`group-hover:animate-wiggle`) on an
+     icon, not a constant idle animation. */
+  .animate-wiggle {
+    animation: wiggle 0.5s ease-in-out;
+  }
+  /* Infinite horizontal scroll for a marquee strip — pair with a track
+     that renders its children twice back to back so the loop is
+     seamless, and `overflow-hidden` on the parent. */
+  .animate-marquee {
+    animation: marquee 22s linear infinite;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes blob-morph {
+  0%, 100% {
+    border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%;
+    transform: rotate(0deg) scale(1);
+  }
+  33% {
+    border-radius: 65% 35% 40% 60% / 55% 65% 35% 45%;
+    transform: rotate(8deg) scale(1.05);
+  }
+  66% {
+    border-radius: 35% 65% 55% 45% / 40% 50% 50% 60%;
+    transform: rotate(-6deg) scale(0.97);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(4deg);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-9deg);
+  }
+  75% {
+    transform: rotate(9deg);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

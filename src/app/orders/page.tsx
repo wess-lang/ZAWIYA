@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { PackageOpen } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { readDb } from "@/lib/db";
 import { SUB_ORDER_STATUS_FLOW, SUB_ORDER_STATUS_LABELS } from "@/lib/types";
 import SubOrderStatusBadge from "@/components/SubOrderStatusBadge";
+import { Card, Container } from "@/components/ui/Card";
+import Button from "@/components/ui/Button";
 
 // FR-11: Order Tracking - one screen combining every sub-order's status
 // until the whole order is delivered (Scenario 6, Section 4.3).
@@ -19,28 +22,30 @@ export default async function OrdersPage() {
 
   if (orders.length === 0) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold text-stone-900">No orders yet</h1>
-        <p className="mt-2 text-sm text-stone-600">
+      <Container size="sm" className="py-20 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-muted text-muted-foreground">
+          <PackageOpen size={22} />
+        </div>
+        <h1 className="font-display text-xl font-semibold text-foreground">No orders yet</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Orders you place will show up here with live status per shop.
         </p>
-        <Link
-          href="/shop"
-          className="mt-6 inline-block rounded-full bg-sage-600 px-6 py-3 font-medium text-white hover:bg-sage-700"
-        >
+        <Button href="/shop" size="lg" className="mt-6">
           Go to shop
-        </Link>
-      </div>
+        </Button>
+      </Container>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-stone-900">Your orders</h1>
+    <Container size="md" className="py-10">
+      <h1 className="font-display mb-6 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        Your orders
+      </h1>
       <div className="flex flex-col gap-6">
         {orders.map((order) => (
-          <div key={order.id} className="rounded-xl border border-stone-200 bg-white p-5">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-500">
+          <Card key={order.id}>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
               <span>Order #{order.id.split("_")[1]?.slice(0, 8) ?? order.id}</span>
               <span>{new Date(order.createdAt).toLocaleString()}</span>
             </div>
@@ -51,9 +56,14 @@ export default async function OrdersPage() {
                 const isCancelled = sub.status === "cancelled";
                 const currentIdx = SUB_ORDER_STATUS_FLOW.indexOf(sub.status);
                 return (
-                  <div key={sub.id} className="rounded-lg border border-stone-100 bg-stone-50 p-3">
+                  <div
+                    key={sub.id}
+                    className="rounded-xl border border-border bg-muted/60 p-3.5 border-l-4"
+                    style={{ borderLeftColor: shop?.accent ?? "var(--border)" }}
+                  >
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-sm font-semibold text-stone-900">
+                      <span className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                        {shop && <span className="h-2 w-2 rounded-full" style={{ backgroundColor: shop.accent }} />}
                         {shop?.name ?? "Shop"}
                       </span>
                       <SubOrderStatusBadge status={sub.status} />
@@ -64,9 +74,8 @@ export default async function OrdersPage() {
                         {SUB_ORDER_STATUS_FLOW.map((step, i) => (
                           <div key={step} className="flex flex-1 items-center">
                             <div
-                              className={`h-1.5 flex-1 rounded-full ${
-                                i <= currentIdx ? "bg-sage-600" : "bg-stone-200"
-                              }`}
+                              className="h-1.5 flex-1 rounded-full transition-colors"
+                              style={{ backgroundColor: i <= currentIdx ? (shop?.accent ?? "var(--accent)") : "var(--border)" }}
                               title={SUB_ORDER_STATUS_LABELS[step]}
                             />
                           </div>
@@ -76,7 +85,7 @@ export default async function OrdersPage() {
 
                     <div className="flex flex-col gap-0.5">
                       {sub.items.map((item) => (
-                        <div key={item.productId} className="flex justify-between text-xs text-stone-600">
+                        <div key={item.productId} className="flex justify-between text-xs text-muted-foreground">
                           <span>
                             {item.productName} x{item.qty}
                           </span>
@@ -84,7 +93,7 @@ export default async function OrdersPage() {
                         </div>
                       ))}
                     </div>
-                    <div className="mt-1 text-right text-xs font-medium text-stone-700">
+                    <div className="mt-1 text-right text-xs font-medium text-foreground/80">
                       Subtotal: JD {sub.subtotal.toFixed(2)}
                     </div>
 
@@ -94,7 +103,7 @@ export default async function OrdersPage() {
                           <Link
                             key={item.productId}
                             href={`/products/${item.productId}`}
-                            className="ml-2 text-xs text-sage-700 hover:underline"
+                            className="ml-2 text-xs text-brand-700 hover:underline"
                           >
                             Leave a review →
                           </Link>
@@ -106,17 +115,17 @@ export default async function OrdersPage() {
               })}
             </div>
 
-            <div className="mt-3 flex items-center justify-between border-t border-stone-100 pt-3 text-sm">
-              <span className="text-stone-500">
+            <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-sm">
+              <span className="text-muted-foreground">
                 {order.addressSnapshot.label}, {order.addressSnapshot.city}
               </span>
-              <span className="font-semibold text-stone-900">
+              <span className="font-semibold text-foreground">
                 Total: JD {order.totalAmount.toFixed(2)}
               </span>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
-    </div>
+    </Container>
   );
 }

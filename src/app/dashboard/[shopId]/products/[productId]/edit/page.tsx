@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { readDb } from "@/lib/db";
+import { Container } from "@/components/ui/Card";
 import ProductForm from "../../ProductForm";
 
 export default async function EditProductPage({
@@ -17,13 +18,19 @@ export default async function EditProductPage({
   const product = db.products.find((p) => p.id === productId && p.shopId === shopId);
   if (!shop || !product) return notFound();
   if (shop.ownerId !== user.id && user.role !== "admin") {
-    return <p className="mx-auto max-w-xl px-4 py-16 text-center text-sm text-red-600">You do not manage this shop.</p>;
+    return (
+      <Container size="sm" className="py-16 text-center text-sm text-destructive">
+        You do not manage this shop.
+      </Container>
+    );
   }
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-stone-900">Edit product</h1>
+    <Container size="sm" className="py-10">
+      <h1 className="font-display mb-6 text-2xl font-semibold tracking-tight text-foreground">
+        Edit product
+      </h1>
       <ProductForm shopId={shopId} product={product} />
-    </div>
+    </Container>
   );
 }

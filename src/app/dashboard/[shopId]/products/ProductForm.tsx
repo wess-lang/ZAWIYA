@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CATEGORY_LABELS, type Category, type Product } from "@/lib/types";
+import { Input, Textarea, Select, FormError } from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as Category[];
 
@@ -75,27 +77,22 @@ export default function ProductForm({
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
-      <input
+      <Input
         required
         placeholder="Product name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
 
       <div className="grid grid-cols-2 gap-3">
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value as Category)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
-        >
+        <Select value={category} onChange={(e) => setCategory(e.target.value as Category)}>
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>
               {CATEGORY_LABELS[c]}
             </option>
           ))}
-        </select>
-        <input
+        </Select>
+        <Input
           required
           type="number"
           min={0}
@@ -103,70 +100,58 @@ export default function ProductForm({
           placeholder="Price (JOD)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <input
+        <Input
           required
           type="number"
           min={0}
           placeholder="Stock"
           value={stock}
           onChange={(e) => setStock(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
         />
-        <input
+        <Input
           placeholder="Dimensions (e.g. 200 x 90 x 80 cm)"
           value={dimensions}
           onChange={(e) => setDimensions(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
         />
       </div>
 
-      <textarea
+      <Textarea
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={3}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
 
-      <input
+      <Input
         placeholder="Style tags, comma separated (e.g. modern, minimalist)"
         value={styleTags}
         onChange={(e) => setStyleTags(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
-      <input
+      <Input
         placeholder="Colour tags, comma separated (e.g. grey, oak)"
         value={colorTags}
         onChange={(e) => setColorTags(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
-      <input
+      <Input
         placeholder="Room tags, comma separated (e.g. living room)"
         value={roomTags}
         onChange={(e) => setRoomTags(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
-      <input
+      <Input
         placeholder="Image URL (optional - a placeholder is used if left blank)"
         value={image}
         onChange={(e) => setImage(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      <FormError>{error}</FormError>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-2 self-start rounded-full bg-sage-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-sage-700 disabled:opacity-60"
-      >
+      <Button type="submit" disabled={loading} className="mt-2 self-start">
         {loading ? "Saving..." : isEdit ? "Save changes" : "Add product"}
-      </button>
+      </Button>
     </form>
   );
 }

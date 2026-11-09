@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Star, CheckCircle2 } from "lucide-react";
+import { Card } from "@/components/ui/Card";
+import { Textarea } from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 export default function ReviewForm({
   productId,
@@ -12,14 +16,15 @@ export default function ReviewForm({
 }) {
   const router = useRouter();
   const [rating, setRating] = useState(5);
+  const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
   if (!signedIn) {
     return (
-      <p className="text-sm text-stone-500">
-        <a href="/login" className="text-sage-700 hover:underline">
+      <p className="text-sm text-muted-foreground">
+        <a href="/login" className="text-brand-700 hover:underline">
           Sign in
         </a>{" "}
         to leave a review.
@@ -27,7 +32,11 @@ export default function ReviewForm({
     );
   }
   if (done) {
-    return <p className="text-sm text-sage-700">Thanks - your review was saved.</p>;
+    return (
+      <p className="flex items-center gap-1.5 text-sm text-brand-700">
+        <CheckCircle2 size={15} /> Thanks — your review was saved.
+      </p>
+    );
   }
 
   async function submit(e: React.FormEvent) {
@@ -47,34 +56,35 @@ export default function ReviewForm({
   }
 
   return (
-    <form onSubmit={submit} className="rounded-xl border border-stone-200 bg-white p-4">
-      <div className="mb-3 flex items-center gap-1">
+    <Card as="form" onSubmit={submit} padding="sm">
+      <div className="mb-3 flex items-center gap-1" onMouseLeave={() => setHover(0)}>
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
             type="button"
             onClick={() => setRating(n)}
-            className={`text-xl ${n <= rating ? "text-amber-500" : "text-stone-300"}`}
+            onMouseEnter={() => setHover(n)}
             aria-label={`${n} star`}
+            className="p-0.5 transition-transform active:scale-90"
           >
-            ★
+            <Star
+              size={20}
+              className={
+                n <= (hover || rating) ? "fill-warning text-warning" : "fill-transparent text-border-strong"
+              }
+            />
           </button>
         ))}
       </div>
-      <textarea
+      <Textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         placeholder="Share your experience with this product (optional)"
         rows={3}
-        className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-3 rounded-full bg-[#21201b] px-5 py-2 text-sm font-medium text-white hover:bg-black disabled:opacity-60"
-      >
+      <Button type="submit" variant="primary" size="sm" disabled={loading} className="mt-3">
         {loading ? "Saving..." : "Submit review"}
-      </button>
-    </form>
+      </Button>
+    </Card>
   );
 }

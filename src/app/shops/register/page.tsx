@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Store, Clock3 } from "lucide-react";
+import { Container } from "@/components/ui/Card";
+import { Input, FormError } from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 const STYLE_OPTIONS = [
   "scandinavian", "minimalist", "boutique", "natural", "artisan", "earthy",
@@ -52,60 +56,66 @@ export default function RegisterShopPage() {
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold text-stone-900">Submitted for review</h1>
-        <p className="mt-2 text-sm text-stone-600">
-          Your shop is now in <strong>Pending Approval</strong> (Scenario 5 of
+      <Container size="sm" className="py-20 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-warning-soft text-warning">
+          <Clock3 size={22} />
+        </div>
+        <h1 className="font-display text-xl font-semibold text-foreground">Submitted for review</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Your shop is now in <strong className="text-foreground">Pending Approval</strong> (Scenario 5 of
           the project documentation). An administrator will review it before
-          it appears on the marketplace - sign in as{" "}
-          <code className="rounded bg-stone-100 px-1">admin@zawiya.jo</code> /{" "}
-          <code className="rounded bg-stone-100 px-1">admin123</code> to see
+          it appears on the marketplace — sign in as{" "}
+          <code className="rounded bg-muted px-1">admin@zawiya.jo</code> /{" "}
+          <code className="rounded bg-muted px-1">admin123</code> to see
           the approval queue.
         </p>
-      </div>
+      </Container>
     );
   }
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-10">
-      <h1 className="mb-2 text-2xl font-semibold text-stone-900">List your shop</h1>
-      <p className="mb-6 text-sm text-stone-600">
-        Tell us about your shop. An administrator reviews new shops before
-        they go live (FR-15).
-      </p>
+    <Container size="sm" className="py-10">
+      <div className="mb-6 flex items-center gap-3">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-soft text-accent-soft-foreground">
+          <Store size={18} />
+        </div>
+        <div>
+          <h1 className="font-display text-xl font-semibold text-foreground">List your shop</h1>
+          <p className="text-sm text-muted-foreground">
+            An administrator reviews new shops before they go live (FR-15).
+          </p>
+        </div>
+      </div>
       <form onSubmit={submit} className="flex flex-col gap-4">
-        <input
+        <Input
           required
           placeholder="Shop name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
         />
-        <input
+        <Input
           placeholder="Tagline (what makes your shop distinct?)"
           value={tagline}
           onChange={(e) => setTagline(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
         />
-        <input
+        <Input
           required
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
         />
         <div>
-          <p className="mb-2 text-xs font-medium text-stone-600">Style tags</p>
+          <p className="mb-2 text-xs font-medium text-muted-foreground">Style tags</p>
           <div className="flex flex-wrap gap-1.5">
             {STYLE_OPTIONS.map((tag) => (
               <button
                 key={tag}
                 type="button"
                 onClick={() => toggleTag(tag)}
-                className={`rounded-full border px-2.5 py-1 text-xs ${
+                className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
                   styleTags.includes(tag)
-                    ? "border-sage-600 bg-sage-600 text-white"
-                    : "border-stone-300 text-stone-600 hover:border-stone-500"
+                    ? "border-accent bg-accent text-accent-foreground"
+                    : "border-border text-muted-foreground hover:border-border-strong hover:text-foreground"
                 }`}
               >
                 {tag}
@@ -113,15 +123,11 @@ export default function RegisterShopPage() {
             ))}
           </div>
         </div>
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="mt-2 rounded-full bg-sage-600 px-6 py-3 font-medium text-white hover:bg-sage-700 disabled:opacity-60"
-        >
+        <FormError>{error}</FormError>
+        <Button type="submit" size="lg" disabled={loading} className="mt-2">
           {loading ? "Submitting..." : "Submit for review"}
-        </button>
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 }

@@ -12,10 +12,7 @@ import '../theme.dart';
 const Map<String, String> kShopLogoPaths = {
   'IKEA': '/brand-logos/ikea.png',
   'Ashley Furniture HomeStore': '/brand-logos/ashley-furniture-homestore.png',
-  'Marina Home Interiors': '/brand-logos/marina-home-interiors.png',
-  'Decoration One': '/brand-logos/decoration-one.png',
   'Shahwan Furniture': '/brand-logos/shahwan-furniture.jpeg',
-  'Home Centre': '/brand-logos/home-centre.jpeg',
   'Midas Home & Office Furniture': '/brand-logos/midas-home-office-furniture.jpeg',
 };
 

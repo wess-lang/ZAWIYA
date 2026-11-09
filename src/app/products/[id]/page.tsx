@@ -1,13 +1,23 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { readDb } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { CATEGORY_LABELS } from "@/lib/types";
 import AddToCartButton from "@/components/AddToCartButton";
 import WishlistButton from "@/components/WishlistButton";
 import StarRating from "@/components/StarRating";
+import { Card, Container } from "@/components/ui/Card";
+import Badge from "@/components/ui/Badge";
+import { swatchColor } from "@/lib/materialColors";
 import ReviewForm from "./ReviewForm";
+
+// A small rotation of tones for style tags ("scandinavian",
+// "minimalist", ...) so the row reads with some genuine variety
+// instead of every tag being the same flat grey pill. Colour tags get
+// their own real swatch dot further down instead of using this set.
+const STYLE_TAG_TONES = ["accent", "info", "plum", "warning"] as const;
 
 export default async function ProductPage({
   params,
@@ -31,9 +41,15 @@ export default async function ProductPage({
     : false;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
+    <Container size="md" className="py-10">
+      <nav className="mb-6 flex items-center gap-1 text-xs text-muted-foreground">
+        <Link href="/shop" className="hover:text-foreground">Shop</Link>
+        <ChevronRight size={12} />
+        <span className="text-foreground">{product.name}</span>
+      </nav>
+
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-stone-100">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-muted">
           <Image
             src={product.image}
             alt={product.name}
@@ -47,30 +63,44 @@ export default async function ProductPage({
           {shop && (
             <Link
               href={`/shops/${shop.id}`}
-              className="text-xs font-medium uppercase tracking-wide text-sage-700 hover:underline"
+              className="text-xs font-semibold uppercase tracking-wide text-brand-700 hover:underline"
             >
               {shop.name}
             </Link>
           )}
-          <h1 className="mt-1 text-2xl font-semibold text-stone-900">{product.name}</h1>
-          <p className="mt-1 text-xs text-stone-500">{CATEGORY_LABELS[product.category]}</p>
-          <div className="mt-2">
+          <h1 className="font-display mt-1.5 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+            {product.name}
+          </h1>
+          <p className="mt-1 text-xs text-muted-foreground">{CATEGORY_LABELS[product.category]}</p>
+          <div className="mt-2.5">
             <StarRating rating={avgRating} count={reviews.length} />
           </div>
-          <p className="mt-4 text-2xl font-semibold text-sage-700">
+          <p className="mt-5 text-2xl font-semibold text-accent-soft-foreground">
             JD {product.price.toFixed(2)}
           </p>
-          <p className="mt-1 text-xs text-stone-500">
+          <p className="mt-1.5 text-xs text-muted-foreground">
             {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
             {product.dimensions && ` · ${product.dimensions}`}
           </p>
-          <p className="mt-4 text-sm leading-relaxed text-stone-700">{product.description}</p>
+          <p className="mt-4 text-sm leading-relaxed text-foreground/85">{product.description}</p>
 
           <div className="mt-4 flex flex-wrap gap-1.5">
-            {[...product.colorTags, ...product.styleTags].map((t) => (
-              <span key={t} className="rounded-full bg-stone-100 px-2 py-0.5 text-[11px] text-stone-600">
+            {product.colorTags.map((t) => (
+              <span
+                key={t}
+                className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground"
+              >
+                <span
+                  className="h-2.5 w-2.5 rounded-full ring-1 ring-black/10"
+                  style={{ backgroundColor: swatchColor(t) }}
+                />
                 {t}
               </span>
+            ))}
+            {product.styleTags.map((t, i) => (
+              <Badge key={t} tone={STYLE_TAG_TONES[i % STYLE_TAG_TONES.length]}>
+                {t}
+              </Badge>
             ))}
           </div>
 
@@ -91,25 +121,25 @@ export default async function ProductPage({
         </div>
       </div>
 
-      <div className="mt-14 border-t border-stone-200 pt-8">
-        <h2 className="mb-4 text-lg font-semibold text-stone-900">Reviews</h2>
+      <div className="mt-14 border-t border-border pt-8">
+        <h2 className="font-display mb-4 text-lg font-semibold text-foreground">Reviews</h2>
         <ReviewForm productId={product.id} signedIn={!!user} />
         {reviews.length === 0 ? (
-          <p className="mt-4 text-sm text-stone-500">No reviews yet.</p>
+          <p className="mt-4 text-sm text-muted-foreground">No reviews yet.</p>
         ) : (
           <div className="mt-6 flex flex-col gap-4">
             {reviews.map((r) => (
-              <div key={r.id} className="rounded-xl border border-stone-200 bg-white p-4">
+              <Card key={r.id} padding="sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-stone-900">{r.userName}</span>
+                  <span className="text-sm font-medium text-foreground">{r.userName}</span>
                   <StarRating rating={r.rating} />
                 </div>
-                {r.comment && <p className="mt-2 text-sm text-stone-600">{r.comment}</p>}
-              </div>
+                {r.comment && <p className="mt-2 text-sm text-muted-foreground">{r.comment}</p>}
+              </Card>
             ))}
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 }

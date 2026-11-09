@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Check, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import Button from "@/components/ui/Button";
 
 interface Props {
   productId: string;
@@ -11,6 +13,7 @@ interface Props {
   shopId: string;
   shopName: string;
   disabled?: boolean;
+  size?: "sm" | "md" | "lg";
 }
 
 export default function AddToCartButton({
@@ -21,21 +24,34 @@ export default function AddToCartButton({
   shopId,
   shopName,
   disabled,
+  size = "lg",
 }: Props) {
   const { add } = useCart();
   const [added, setAdded] = useState(false);
 
   return (
-    <button
+    <Button
+      variant="primary"
+      size={size}
       disabled={disabled}
+      className="w-full"
       onClick={() => {
         add({ productId, name, price, image, shopId, shopName });
         setAdded(true);
         setTimeout(() => setAdded(false), 1500);
       }}
-      className="w-full rounded-full bg-[#21201b] px-6 py-3 font-medium text-white hover:bg-black disabled:cursor-not-allowed disabled:bg-stone-300"
     >
-      {disabled ? "Out of stock" : added ? "Added to cart" : "Add to cart"}
-    </button>
+      {disabled ? (
+        "Out of stock"
+      ) : added ? (
+        <>
+          <Check size={16} /> Added to cart
+        </>
+      ) : (
+        <>
+          <ShoppingBag size={16} /> Add to cart
+        </>
+      )}
+    </Button>
   );
 }

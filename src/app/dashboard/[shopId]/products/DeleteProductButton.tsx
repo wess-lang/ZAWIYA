@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
 
 export default function DeleteProductButton({ productId }: { productId: string }) {
   const router = useRouter();
@@ -22,9 +23,10 @@ export default function DeleteProductButton({ productId }: { productId: string }
     <button
       onClick={handleDelete}
       disabled={loading}
-      className="text-xs text-stone-400 hover:text-red-600 disabled:opacity-50"
+      aria-label="Remove product"
+      className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive-soft hover:text-destructive disabled:opacity-50"
     >
-      {loading ? "Removing..." : "Remove"}
+      <Trash2 size={14} />
     </button>
   );
 }

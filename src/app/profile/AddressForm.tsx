@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/Card";
+import { Input, Textarea, FormError } from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 export default function AddressForm() {
   const router = useRouter();
@@ -35,38 +38,31 @@ export default function AddressForm() {
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4">
-      <p className="text-xs font-medium text-stone-600">Add a new address</p>
-      <input
+    <Card as="form" onSubmit={submit} padding="sm" className="flex flex-col gap-3">
+      <p className="text-xs font-medium text-muted-foreground">Add a new address</p>
+      <Input
         required
         placeholder="Label (e.g. Home, Work)"
         value={label}
         onChange={(e) => setLabel(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
-      <input
+      <Input
         required
         placeholder="City"
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
       />
-      <textarea
+      <Textarea
         required
         placeholder="Street, building, floor..."
         value={details}
         onChange={(e) => setDetails(e.target.value)}
-        className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
         rows={2}
       />
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={loading}
-        className="self-start rounded-full bg-sage-600 px-5 py-2 text-sm font-medium text-white hover:bg-sage-700 disabled:opacity-60"
-      >
+      <FormError>{error}</FormError>
+      <Button type="submit" size="sm" disabled={loading} className="self-start">
         {loading ? "Saving..." : "Save address"}
-      </button>
-    </form>
+      </Button>
+    </Card>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SUB_ORDER_STATUS_FLOW, SUB_ORDER_STATUS_LABELS, type SubOrder } from "@/lib/types";
 import SubOrderStatusBadge from "@/components/SubOrderStatusBadge";
+import { Select } from "@/components/ui/Input";
 
 export default function SubOrderRow({
   orderId,
@@ -32,22 +33,20 @@ export default function SubOrderRow({
   const options: string[] = [...SUB_ORDER_STATUS_FLOW, "cancelled"];
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone-100 pt-3">
+    <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
       <SubOrderStatusBadge status={subOrder.status} />
-      <div className="flex items-center gap-2">
-        <select
-          value={subOrder.status}
-          disabled={loading}
-          onChange={(e) => updateStatus(e.target.value)}
-          className="rounded-full border border-stone-300 px-3 py-1.5 text-xs font-medium"
-        >
-          {options.map((s) => (
-            <option key={s} value={s}>
-              {SUB_ORDER_STATUS_LABELS[s as keyof typeof SUB_ORDER_STATUS_LABELS]}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Select
+        value={subOrder.status}
+        disabled={loading}
+        onChange={(e) => updateStatus(e.target.value)}
+        className="w-auto rounded-full py-1.5 text-xs font-medium"
+      >
+        {options.map((s) => (
+          <option key={s} value={s}>
+            {SUB_ORDER_STATUS_LABELS[s as keyof typeof SUB_ORDER_STATUS_LABELS]}
+          </option>
+        ))}
+      </Select>
     </div>
   );
 }

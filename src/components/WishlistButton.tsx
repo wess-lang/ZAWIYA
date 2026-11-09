@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Heart } from "lucide-react";
 
 export default function WishlistButton({
   productId,
@@ -19,9 +20,9 @@ export default function WishlistButton({
       <a
         href="/login"
         title="Sign in to save to your wishlist"
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-stone-300 text-stone-400 hover:border-stone-500"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
       >
-        ♡
+        <Heart size={17} />
       </a>
     );
   }
@@ -51,13 +52,13 @@ export default function WishlistButton({
       onClick={toggle}
       disabled={busy}
       title={saved ? "Remove from wishlist" : "Save to wishlist"}
-      className={`flex h-9 w-9 items-center justify-center rounded-full border text-base transition ${
+      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-all duration-150 active:scale-95 disabled:opacity-60 ${
         saved
-          ? "border-sage-600 bg-sage-50 text-sage-700"
-          : "border-stone-300 text-stone-500 hover:border-stone-500"
+          ? "border-accent bg-accent-soft text-accent-soft-foreground"
+          : "border-border text-muted-foreground hover:border-border-strong hover:text-foreground"
       }`}
     >
-      {saved ? "♥" : "♡"}
+      <Heart size={17} className={saved ? "fill-current" : ""} />
     </button>
   );
 }

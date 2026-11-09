@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Heart } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { readDb } from "@/lib/db";
 import ProductCard from "@/components/ProductCard";
+import { Container } from "@/components/ui/Card";
 
 // FR-18: Wishlist / Favourites
 export default async function WishlistPage() {
@@ -17,12 +19,15 @@ export default async function WishlistPage() {
   const shopsById = new Map(db.shops.map((s) => [s.id, s]));
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-stone-900">Your wishlist</h1>
+    <Container size="lg" className="py-10">
+      <h1 className="font-display mb-6 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        Your wishlist
+      </h1>
       {products.length === 0 ? (
-        <div className="text-center text-sm text-stone-600">
+        <div className="flex flex-col items-center py-16 text-center text-sm text-muted-foreground">
+          <Heart size={28} className="mb-3 text-border-strong" />
           Nothing saved yet.{" "}
-          <Link href="/shop" className="text-sage-700 hover:underline">
+          <Link href="/shop" className="text-brand-700 hover:underline">
             Browse the marketplace
           </Link>
         </div>
@@ -33,6 +38,6 @@ export default async function WishlistPage() {
           ))}
         </div>
       )}
-    </div>
+    </Container>
   );
 }

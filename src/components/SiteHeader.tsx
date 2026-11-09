@@ -1,86 +1,123 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { ShoppingBag, Sparkles } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import ThemeToggle from "@/components/ThemeToggle";
 import type { SafeUser } from "@/lib/auth";
 
+const NAV_LINKS = [
+  { href: "/shop", label: "Shop" },
+  { href: "/shops", label: "Partner Shops" },
+  { href: "/wishlist", label: "Wishlist" },
+];
+
+// Mobile navigation lives in the bottom tab bar (BottomNav) — this
+// header stays a slim top bar on mobile (logo, theme toggle, cart) and
+// carries the full nav only on desktop, where there's no tab bar.
 export default function SiteHeader({ user }: { user: SafeUser | null }) {
   const { count } = useCart();
-  const router = useRouter();
+  const pathname = usePathname();
 
-  async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/");
-    router.refresh();
-  }
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-black/10 bg-[#faf7f1]/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link href="/" className="text-lg font-semibold tracking-tight text-[#21201b]">
-          ZAWIYA<span className="text-sage-600">.</span>
+    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
+        <Link href="/" className="font-display text-3xl font-semibold tracking-tight text-foreground">
+          Zawiya<span className="text-accent">.</span>
         </Link>
 
-        <nav className="hidden items-center gap-5 text-sm text-stone-700 sm:flex">
-          <Link href="/shop" className="hover:text-stone-950">Shop</Link>
-          <Link href="/shops" className="hover:text-stone-950">Partner Shops</Link>
-          <Link href="/wishlist" className="hover:text-stone-950">Wishlist</Link>
-          {user && <Link href="/orders" className="hover:text-stone-950">Orders</Link>}
+        <nav className="hidden items-center gap-1 text-sm sm:flex">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
+                isActive(link.href)
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          {user && (
+            <Link
+              href="/orders"
+              className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
+                isActive("/orders")
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              Orders
+            </Link>
+          )}
           {user?.role === "shop_owner" && (
-            <Link href="/dashboard" className="hover:text-stone-950">Dashboard</Link>
+            <Link
+              href="/dashboard"
+              className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
+                isActive("/dashboard")
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              Dashboard
+            </Link>
           )}
           {user?.role === "admin" && (
-            <Link href="/admin/shops" className="hover:text-stone-950">Admin</Link>
+            <Link
+              href="/admin/shops"
+              className={`rounded-full px-3.5 py-1.5 font-medium transition-colors ${
+                isActive("/admin")
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              Admin
+            </Link>
           )}
           <Link
             href="/room-fit"
-            className="rounded-full bg-sage-600 px-3 py-1.5 font-medium text-white hover:bg-sage-700"
+            className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 font-semibold text-accent-foreground shadow-sm transition-all hover:shadow-md hover:brightness-105"
           >
+            <Sparkles size={14} />
             AI Room-Fit
           </Link>
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/cart"
-            className="relative flex items-center gap-1 rounded-full border border-stone-300 px-3 py-1.5 text-sm text-stone-800 hover:border-stone-500"
-          >
-            Cart
-            {count > 0 && (
-              <span className="ml-1 inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-sage-600 px-1.5 text-xs font-semibold text-white">
-                {count}
-              </span>
-            )}
-          </Link>
           {user ? (
-            <button
-              onClick={logout}
-              className="hidden text-sm text-stone-600 hover:text-stone-900 sm:inline"
+            <Link
+              href="/profile"
+              className="ml-1 rounded-full px-3.5 py-1.5 font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
-              Sign out
-            </button>
+              {user.name.split(" ")[0]}
+            </Link>
           ) : (
             <Link
               href="/login"
-              className="hidden text-sm font-medium text-stone-800 hover:text-stone-950 sm:inline"
+              className="ml-1 rounded-full px-3.5 py-1.5 font-medium text-foreground transition-colors hover:bg-muted"
             >
               Sign in
             </Link>
           )}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link
+            href="/cart"
+            className="relative flex h-9 items-center gap-1.5 rounded-full border border-border px-3.5 text-sm font-medium text-foreground transition-colors hover:border-border-strong"
+          >
+            <ShoppingBag size={15} />
+            <span className="hidden sm:inline">Cart</span>
+            {count > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 inline-flex min-w-[1.15rem] items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold text-accent-foreground">
+                {count}
+              </span>
+            )}
+          </Link>
         </div>
-      </div>
-      <div className="flex justify-center gap-5 overflow-x-auto border-t border-black/5 bg-[#faf7f1] px-2 py-1.5 text-xs text-stone-700 sm:hidden">
-        <Link href="/shop">Shop</Link>
-        <Link href="/shops">Shops</Link>
-        <Link href="/wishlist">Wishlist</Link>
-        {user && <Link href="/orders">Orders</Link>}
-        <Link href="/room-fit" className="font-medium text-sage-700">AI Room-Fit</Link>
-        {user ? (
-          <button onClick={logout}>Sign out</button>
-        ) : (
-          <Link href="/login">Sign in</Link>
-        )}
       </div>
     </header>
   );

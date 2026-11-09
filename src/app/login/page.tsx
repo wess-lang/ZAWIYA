@@ -4,6 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { LogIn } from "lucide-react";
+import { Container, Card } from "@/components/ui/Card";
+import { Input, FormError } from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 function LoginFormInner() {
   const router = useRouter();
@@ -38,48 +42,49 @@ function LoginFormInner() {
   }
 
   return (
-    <div className="mx-auto max-w-sm px-4 py-16">
-      <h1 className="mb-1 text-2xl font-semibold text-stone-900">Sign in</h1>
-      <p className="mb-6 text-sm text-stone-600">
-        New here?{" "}
-        <Link href="/register" className="text-sage-700 hover:underline">
-          Create an account
-        </Link>
-      </p>
-      <form onSubmit={submit} className="flex flex-col gap-3">
-        <input
-          required
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
-        />
-        <input
-          required
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
-        />
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="mt-2 rounded-full bg-sage-600 px-6 py-3 font-medium text-white hover:bg-sage-700 disabled:opacity-60"
-        >
-          {loading ? "Signing in..." : "Sign in"}
-        </button>
-      </form>
+    <Container size="sm" className="py-16 sm:py-24">
+      <div className="mx-auto max-w-sm">
+        <div className="mb-6 flex flex-col items-center text-center">
+          <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-accent-soft text-accent-soft-foreground">
+            <LogIn size={18} />
+          </div>
+          <h1 className="font-display text-2xl font-semibold text-foreground">Sign in</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            New here?{" "}
+            <Link href="/register" className="font-medium text-brand-700 hover:underline">
+              Create an account
+            </Link>
+          </p>
+        </div>
+        <form onSubmit={submit} className="flex flex-col gap-3">
+          <Input
+            required
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            required
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FormError>{error}</FormError>
+          <Button type="submit" size="lg" disabled={loading} className="mt-1 w-full">
+            {loading ? "Signing in..." : "Sign in"}
+          </Button>
+        </form>
 
-      <div className="mt-8 rounded-lg border border-dashed border-stone-300 p-3 text-xs text-stone-500">
-        <p className="mb-1 font-medium text-stone-600">Demo accounts (seeded):</p>
-        <p>Customer: customer@zawiya.jo / customer123</p>
-        <p>Shop owner: ashley@zawiya.jo / shopowner123</p>
-        <p>Admin: admin@zawiya.jo / admin123</p>
+        <Card padding="sm" className="mt-8 border-dashed text-xs text-muted-foreground">
+          <p className="mb-1.5 font-medium text-foreground">Demo accounts (seeded)</p>
+          <p>Customer: customer@zawiya.jo / customer123</p>
+          <p>Shop owner: ashley@zawiya.jo / shopowner123</p>
+          <p>Admin: admin@zawiya.jo / admin123</p>
+        </Card>
       </div>
-    </div>
+    </Container>
   );
 }
 

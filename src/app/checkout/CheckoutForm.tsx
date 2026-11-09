@@ -3,8 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CheckCircle2, Wallet, Smartphone, CreditCard } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import type { Address, PaymentMethod } from "@/lib/types";
+import Button from "@/components/ui/Button";
+import { Card, Container } from "@/components/ui/Card";
+import { Input, Textarea, FormError } from "@/components/ui/Input";
+
+const PAYMENT_OPTIONS: { value: PaymentMethod; label: string; icon: typeof Wallet }[] = [
+  { value: "cod", label: "Cash on delivery", icon: Wallet },
+  { value: "cliq", label: "CliQ", icon: Smartphone },
+  { value: "card", label: "Card", icon: CreditCard },
+];
 
 export default function CheckoutForm({ addresses }: { addresses: Address[] }) {
   const { lines, linesByShop, total, clear } = useCart();
@@ -44,31 +54,31 @@ export default function CheckoutForm({ addresses }: { addresses: Address[] }) {
 
   if (placedOrderId) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16 text-center">
-        <h1 className="text-xl font-semibold text-stone-900">Order placed</h1>
-        <p className="mt-2 text-sm text-stone-600">
+      <Container size="sm" className="py-20 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent-soft-foreground">
+          <CheckCircle2 size={24} />
+        </div>
+        <h1 className="font-display text-xl font-semibold text-foreground">Order placed</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           {linesByShop.size > 1
             ? `Your order was split into ${linesByShop.size} shop-specific sub-orders (FR-10), each tracked separately.`
             : "Your order has been sent to the shop."}
         </p>
-        <Link
-          href="/orders"
-          className="mt-6 inline-block rounded-full bg-sage-600 px-6 py-3 font-medium text-white hover:bg-sage-700"
-        >
+        <Button href="/orders" size="lg" className="mt-6">
           Track your order
-        </Link>
-      </div>
+        </Button>
+      </Container>
     );
   }
 
   if (lines.length === 0) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16 text-center text-stone-600">
+      <Container size="sm" className="py-20 text-center text-muted-foreground">
         Your cart is empty.{" "}
-        <Link href="/shop" className="text-sage-700 hover:underline">
+        <Link href="/shop" className="text-brand-700 hover:underline">
           Go shopping
         </Link>
-      </div>
+      </Container>
     );
   }
 
@@ -104,17 +114,19 @@ export default function CheckoutForm({ addresses }: { addresses: Address[] }) {
   }
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-stone-900">Checkout</h1>
+    <Container size="sm" className="py-10">
+      <h1 className="font-display mb-6 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        Checkout
+      </h1>
 
-      <div className="mb-6 flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-4">
+      <Card padding="sm" className="mb-6 flex flex-col gap-3">
         {Array.from(linesByShop.entries()).map(([shopId, shopLines]) => (
           <div key={shopId}>
-            <div className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+            <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               {shopLines[0].shopName}
             </div>
             {shopLines.map((l) => (
-              <div key={l.productId} className="flex justify-between py-1 text-sm text-stone-700">
+              <div key={l.productId} className="flex justify-between py-1 text-sm text-foreground/85">
                 <span>
                   {l.name} x{l.qty}
                 </span>
@@ -123,52 +135,51 @@ export default function CheckoutForm({ addresses }: { addresses: Address[] }) {
             ))}
           </div>
         ))}
-        <div className="mt-2 flex justify-between border-t border-stone-200 pt-2 text-sm font-semibold text-stone-900">
+        <div className="mt-2 flex justify-between border-t border-border pt-2 text-sm font-semibold text-foreground">
           <span>Total</span>
           <span>JD {total.toFixed(2)}</span>
         </div>
-      </div>
+      </Card>
 
-      <form onSubmit={placeOrder} className="flex flex-col gap-4">
+      <form onSubmit={placeOrder} className="flex flex-col gap-5">
         <div>
-          <p className="mb-2 text-xs font-medium text-stone-600">Delivery address</p>
+          <p className="mb-2 text-xs font-medium text-muted-foreground">Delivery address</p>
           {localAddresses.length === 0 ? (
-            <div className="flex flex-col gap-2 rounded-lg border border-dashed border-stone-300 p-3">
-              <input
+            <div className="flex flex-col gap-2 rounded-xl border border-dashed border-border-strong p-3.5">
+              <Input
                 placeholder="Label (e.g. Home)"
                 value={newAddr.label}
                 onChange={(e) => setNewAddr({ ...newAddr, label: e.target.value })}
-                className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
               />
-              <input
+              <Input
                 placeholder="City"
                 value={newAddr.city}
                 onChange={(e) => setNewAddr({ ...newAddr, city: e.target.value })}
-                className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
               />
-              <textarea
+              <Textarea
                 placeholder="Street, building, floor..."
                 value={newAddr.details}
                 onChange={(e) => setNewAddr({ ...newAddr, details: e.target.value })}
-                className="rounded-lg border border-stone-300 px-3 py-2 text-sm"
                 rows={2}
               />
-              <button
+              <Button
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={saveAddress}
                 disabled={savingAddr || !newAddr.city || !newAddr.details}
-                className="self-start rounded-full border border-stone-400 px-4 py-1.5 text-xs font-medium hover:border-stone-600 disabled:opacity-60"
+                className="self-start"
               >
                 {savingAddr ? "Saving..." : "Save address"}
-              </button>
+              </Button>
             </div>
           ) : (
             <div className="flex flex-col gap-2">
               {localAddresses.map((a) => (
                 <label
                   key={a.id}
-                  className={`flex cursor-pointer items-start gap-2 rounded-lg border p-3 text-sm ${
-                    addressId === a.id ? "border-sage-600 bg-sage-50" : "border-stone-200"
+                  className={`flex cursor-pointer items-start gap-2 rounded-xl border p-3.5 text-sm transition-colors ${
+                    addressId === a.id ? "border-accent bg-accent-soft" : "border-border hover:border-border-strong"
                   }`}
                 >
                   <input
@@ -176,12 +187,12 @@ export default function CheckoutForm({ addresses }: { addresses: Address[] }) {
                     name="address"
                     checked={addressId === a.id}
                     onChange={() => setAddressId(a.id)}
-                    className="mt-1"
+                    className="mt-1 accent-[var(--accent)]"
                   />
                   <span>
-                    <span className="font-medium text-stone-900">{a.label}</span>
+                    <span className="font-medium text-foreground">{a.label}</span>
                     <br />
-                    <span className="text-stone-600">
+                    <span className="text-muted-foreground">
                       {a.details}, {a.city}
                     </span>
                   </span>
@@ -192,35 +203,31 @@ export default function CheckoutForm({ addresses }: { addresses: Address[] }) {
         </div>
 
         <div>
-          <p className="mb-2 text-xs font-medium text-stone-600">Payment method</p>
+          <p className="mb-2 text-xs font-medium text-muted-foreground">Payment method</p>
           <div className="flex gap-2">
-            {(["cod", "cliq", "card"] as PaymentMethod[]).map((m) => (
+            {PAYMENT_OPTIONS.map(({ value, label, icon: Icon }) => (
               <button
-                key={m}
+                key={value}
                 type="button"
-                onClick={() => setPaymentMethod(m)}
-                className={`rounded-full border px-4 py-2 text-xs font-medium ${
-                  paymentMethod === m
-                    ? "border-sage-600 bg-sage-600 text-white"
-                    : "border-stone-300 text-stone-700 hover:border-stone-500"
+                onClick={() => setPaymentMethod(value)}
+                className={`flex flex-1 items-center justify-center gap-1.5 rounded-full border px-3 py-2.5 text-xs font-medium transition-colors ${
+                  paymentMethod === value
+                    ? "border-accent bg-accent text-accent-foreground"
+                    : "border-border text-muted-foreground hover:border-border-strong hover:text-foreground"
                 }`}
               >
-                {m === "cod" ? "Cash on delivery" : m === "cliq" ? "CliQ" : "Card"}
+                <Icon size={14} /> {label}
               </button>
             ))}
           </div>
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        <FormError>{error}</FormError>
 
-        <button
-          type="submit"
-          disabled={loading || !addressId}
-          className="mt-2 w-full rounded-full bg-[#21201b] px-6 py-3 font-medium text-white hover:bg-black disabled:opacity-60"
-        >
+        <Button type="submit" variant="primary" size="lg" disabled={loading || !addressId} className="w-full">
           {loading ? "Placing order..." : "Place order →"}
-        </button>
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 }

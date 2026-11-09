@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { readDb } from "@/lib/db";
+import { Card, Container } from "@/components/ui/Card";
 import SubOrderRow from "./SubOrderRow";
 
 // FR-14: Shop Order Management
@@ -17,7 +18,11 @@ export default async function ShopOrdersPage({
   const shop = db.shops.find((s) => s.id === shopId);
   if (!shop) return notFound();
   if (shop.ownerId !== user.id && user.role !== "admin") {
-    return <p className="mx-auto max-w-xl px-4 py-16 text-center text-sm text-red-600">You do not manage this shop.</p>;
+    return (
+      <Container size="sm" className="py-16 text-center text-sm text-destructive">
+        You do not manage this shop.
+      </Container>
+    );
   }
 
   const rows = db.orders
@@ -31,22 +36,24 @@ export default async function ShopOrdersPage({
   const usersById = new Map(db.users.map((u) => [u.id, u]));
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-stone-900">{shop.name} · Orders</h1>
+    <Container size="md" className="py-10">
+      <h1 className="font-display mb-6 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        {shop.name} · Orders
+      </h1>
 
       {rows.length === 0 ? (
-        <p className="text-sm text-stone-500">No orders yet.</p>
+        <p className="text-sm text-muted-foreground">No orders yet.</p>
       ) : (
         <div className="flex flex-col gap-4">
           {rows.map(({ order, subOrder }) => (
-            <div key={subOrder.id} className="rounded-xl border border-stone-200 bg-white p-4">
-              <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-500">
+            <Card key={subOrder.id} padding="sm">
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span>{usersById.get(order.userId)?.name ?? "Customer"}</span>
                 <span>{new Date(order.createdAt).toLocaleString()}</span>
               </div>
               <div className="mb-2 flex flex-col gap-0.5">
                 {subOrder.items.map((item) => (
-                  <div key={item.productId} className="flex justify-between text-sm text-stone-700">
+                  <div key={item.productId} className="flex justify-between text-sm text-foreground/85">
                     <span>
                       {item.productName} x{item.qty}
                     </span>
@@ -54,14 +61,14 @@ export default async function ShopOrdersPage({
                   </div>
                 ))}
               </div>
-              <div className="mb-3 text-xs text-stone-500">
+              <div className="mb-3 text-xs text-muted-foreground">
                 Deliver to: {order.addressSnapshot.details}, {order.addressSnapshot.city}
               </div>
               <SubOrderRow orderId={order.id} subOrder={subOrder} />
-            </div>
+            </Card>
           ))}
         </div>
       )}
-    </div>
+    </Container>
   );
 }
