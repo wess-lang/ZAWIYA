@@ -34,15 +34,26 @@ interface PlacementProduct {
   category?: string;
 }
 
+interface NormalizedBoundingBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 interface Placement {
   spaceId: string;
   description: string;
   category: string;
   /** Which way this piece should face, decided during analysis the
-   *  way a human arranging the room would — fed straight into the
-   *  compositing step below so the generated photo actually renders
-   *  that angle instead of placing the product flat-on by default. */
+   *  way a human arranging the room would — shown as a caption only;
+   *  the deterministic compositing step below doesn't rotate artwork. */
   orientation: string;
+  /** Where this piece goes, as fractions (0-1) of the room photo's
+   *  width/height — fed straight into the compositing step so each
+   *  product gets pasted at the spot (and roughly the scale) analysis
+   *  actually found for it, instead of a generic default position. */
+  boundingBox: NormalizedBoundingBox;
   matchConfidence: number;
   fallback: { used: boolean; reason?: string };
   product: PlacementProduct | null;
@@ -108,7 +119,12 @@ function fileToBase64(file: File): Promise<{ data: string; mediaType: string }> 
 function itemsToPayload(items: Placement[]) {
   return items
     .filter((p): p is Placement & { product: PlacementProduct } => p.product !== null)
-    .map((p) => ({ productId: p.product.id, placementHint: p.description, orientation: p.orientation }));
+    .map((p) => ({
+      productId: p.product.id,
+      placementHint: p.description,
+      orientation: p.orientation,
+      boundingBox: p.boundingBox,
+    }));
 }
 
 export default function RoomFitPage() {
@@ -357,15 +373,21 @@ export default function RoomFitPage() {
     }
   }
 
+  // Swapping used to just update the list and leave the photo stale
+  // until a separate "Update room with changes" click; now it
+  // regenerates immediately, the same instant feedback "Preview alone"
+  // already gives for a single item.
   function chooseSwap(item: Placement, candidate: PlacementProduct) {
-    setItems((prev) =>
-      prev.map((p) =>
-        p.spaceId === item.spaceId
-          ? { ...p, product: candidate, shopName: shopsById[candidate.shopId] ?? p.shopName, fallback: { used: false } }
-          : p
-      )
+    const updated = items.map((p) =>
+      p.spaceId === item.spaceId
+        ? { ...p, product: candidate, shopName: shopsById[candidate.shopId] ?? p.shopName, fallback: { used: false } }
+        : p
     );
+    setItems(updated);
     setSwapOpenFor(null);
+    if (generated) {
+      generateComposite(updated);
+    }
   }
 
   const busy = analyzing || composing;

@@ -12,6 +12,7 @@ import { Card, Container } from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { swatchColor } from "@/lib/materialColors";
 import ReviewForm from "./ReviewForm";
+import SeeInRoomButton from "./SeeInRoomButton";
 
 // A small rotation of tones for style tags ("scandinavian",
 // "minimalist", ...) so the row reads with some genuine variety
@@ -117,6 +118,15 @@ export default async function ProductPage({
               />
             </div>
             <WishlistButton productId={product.id} initial={wishlisted} signedIn={!!user} />
+          </div>
+
+          <div className="mt-3">
+            <SeeInRoomButton
+              productId={product.id}
+              productName={product.name}
+              signedIn={!!user}
+              hasRealPhoto={product.image.startsWith("/products/real/")}
+            />
           </div>
         </div>
       </div>

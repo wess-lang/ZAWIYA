@@ -197,7 +197,7 @@ approval; sign in as admin (`/admin/shops`) to approve or reject it.
 | FR-01 | Registration & auth | ✅ `/register`, `/login`, bcrypt + JWT session |
 | FR-02 | Profile & addresses | ✅ `/profile` |
 | FR-03 | Room photo upload | ✅ `/room-fit` |
-| FR-04 | AI room analysis | ✅ via Claude vision, see route comment |
+| FR-04 | AI room analysis | ✅ via Gemini vision (free tier), see route comment |
 | FR-05 | AI furniture placement | ✅ `/api/rooms/compose` generates an edited room photo with matched products placed into it (Gemini image generation), on top of the original route's ranked, purchasable match-score list — see Known limitations for the one unverified path |
 | FR-06 | Multi-shop catalogue | ✅ `/shop`, `/shops` |
 | FR-07 | Search & filter | ✅ `/shop?q=&category=&shop=` |
